@@ -89,24 +89,23 @@ function Divider() {
     }} />
   );
 }
+function PullQuote({ quote, cite }) {
+  return (
+    <div style={{ ... }}>
+       {/* ... the code you just sent ... */}
+    </div>
+  );
+}
 function LeafCutterAntReport() {
   return (
     <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
-       
+      
+      {/* THIS IS HOW YOU USE THE PULLQUOTE TOOL */}
+      <PullQuote 
+        quote="They are the only animals besides humans to develop complex agriculture." 
+        cite="Research Archive" 
+      />
 
-
-function PullQuote({ quote, cite }) {
-  return (
-    <div style={{ margin:"40px 0", padding:"28px 36px", borderTop:`2px solid ${C.amber}`, borderBottom:`2px solid ${C.amber}` }}>
-      <p style={{ fontFamily:PLAYFAIR, fontSize:"clamp(18px,2.2vw,26px)", fontStyle:"italic", color:C.cream, lineHeight:1.4, textAlign:"center", margin:0 }}>
-        "{quote}"
-      </p>
-      {cite && (
-        <cite style={{ display:"block", textAlign:"center", marginTop:14, fontFamily:MONO, fontSize:10,
-                       letterSpacing:2, color:C.textDim, textTransform:"uppercase", fontStyle:"normal" }}>
-          — {cite}
-        </cite>
-      )}
     </div>
   );
 }
