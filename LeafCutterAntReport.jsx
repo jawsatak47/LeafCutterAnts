@@ -1,72 +1,45 @@
+import { useState, useEffect } from "react";
 
-
-/* ─────────────────────────────────────────────
-   LEAF CUTTER ANT DEEP RESEARCH REPORT
-   Self-contained React component — no external
-   dependencies beyond React itself.
-───────────────────────────────────────────── */
-
-const FONTS =
-  "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;700&display=swap";
-
+/* 1. CONSTANTS & STYLES */
 const C = {
-  bg:          "#0d1208",
-  bg2:         "#111a0a",
-  bg3:         "#152010",
-  greenDeep:   "#1a3a0f",
-  greenMid:    "#2d6a1a",
+  bg: "#0d1208",
+  bg2: "#111a0a",
+  bg3: "#152010",
+  greenDeep: "#1a3a0f",
+  greenMid: "#2d6a1a",
   greenBright: "#4caf50",
-  greenNeon:   "#7fff50",
-  amber:       "#d4a017",
-  amberLight:  "#f0c040",
-  cream:       "#f4f0e0",
-  creamDim:    "#c8bfa0",
-  text:        "#e8e2d0",
-  textDim:     "#a09880",
-  border:      "rgba(76,175,80,0.18)",
-  borderBright:"rgba(76,175,80,0.5)",
-  divider:     "rgba(212,160,23,0.25)",
+  greenNeon: "#7fff50",
+  amber: "#d4a017",
+  amberLight: "#f0c040",
+  cream: "#f4f0e0",
+  creamDim: "#c8bfa0",
+  text: "#e8e2d0",
+  textDim: "#a09880",
+  border: "rgba(76,175,80,0.18)",
+  borderBright: "rgba(76,175,80,0.5)",
+  divider: "rgba(212,160,23,0.25)",
 };
-function Divider() {
-  return (
-    <div style={{ 
-      height: 1, 
-      background: `linear-gradient(90deg, transparent, ${C.divider}, transparent)`, 
-      margin: "60px 0" 
-    }} />
-  );
-}
-
-function FactBox({ label, children }) {
-  return (
-    <div style={{ borderLeft: `2px solid ${C.greenBright}`, paddingLeft: 20, margin: "20px 0" }}>
-      <strong style={{ color: C.greenBright, display: "block", marginBottom: 8 }}>{label}</strong>
-      <div style={{ fontFamily: SERIF, lineHeight: 1.6 }}>{children}</div>
-    </div>
-  );
-}
 
 const PLAYFAIR = "'Playfair Display', Georgia, serif";
-const SERIF    = "'Source Serif 4', Georgia, serif";
-const MONO     = "'JetBrains Mono', monospace";
+const SERIF = "'Source Serif 4', Georgia, serif";
+const MONO = "'JetBrains Mono', monospace";
 
-/* ── small shared components ── */
+/* 2. SHARED TOOLS (Must stay OUTSIDE the main report) */
 
 function SectionLabel({ num, children }) {
   return (
-    <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
-      <span style={{ fontFamily:MONO, fontSize:10, letterSpacing:4, textTransform:"uppercase", color:C.greenBright }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+      <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 4, textTransform: "uppercase", color: C.greenBright }}>
         {num} — {children}
       </span>
-      <div style={{ flex:1, height:1, background:C.border }} />
+      <div style={{ flex: 1, height: 1, background: C.border }} />
     </div>
   );
 }
 
 function SectionTitle({ children }) {
   return (
-    <h2 style={{ fontFamily:PLAYFAIR, fontSize:"clamp(30px,4vw,50px)", fontWeight:700, color:C.cream,
-                 lineHeight:1.1, marginBottom:28, letterSpacing:"-0.5px" }}>
+    <h2 style={{ fontFamily: PLAYFAIR, fontSize: "clamp(30px,4vw,50px)", fontWeight: 700, color: C.cream, lineHeight: 1.1, marginBottom: 28, letterSpacing: "-0.5px" }}>
       {children}
     </h2>
   );
@@ -74,585 +47,58 @@ function SectionTitle({ children }) {
 
 function Lead({ children }) {
   return (
-    <p style={{ fontSize:19, color:C.creamDim, fontStyle:"italic", fontWeight:300, marginBottom:28,
-                lineHeight:1.7, borderLeft:`3px solid ${C.amber}`, paddingLeft:20 }}>
+    <p style={{ fontSize: 19, color: C.creamDim, fontStyle: "italic", fontWeight: 300, marginBottom: 28, lineHeight: 1.7, borderLeft: `3px solid ${C.amber}`, paddingLeft: 20 }}>
       {children}
     </p>
   );
 }
+
 function Divider() {
-  return (
-    <div style={{ 
-      height: 1, 
-      background: `linear-gradient(90deg, transparent, ${C.divider}, transparent)`, 
-      margin: "60px 0" 
-    }} />
-  );
+  return <div style={{ height: 1, background: `linear-gradient(90deg,transparent,${C.divider},transparent)`, margin: "60px 0" }} />;
 }
+
 function PullQuote({ quote, cite }) {
   return (
-    <div style={{ ... }}>
-       {/* ... the code you just sent ... */}
-    </div>
-  );
-}
-function LeafCutterAntReport() {
-  return (
-    <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
-      
-      {/* THIS IS HOW YOU USE THE PULLQUOTE TOOL */}
-      <PullQuote 
-        quote="They are the only animals besides humans to develop complex agriculture." 
-        cite="Research Archive" 
-      />
-
+    <div style={{ margin: "40px 0", padding: "28px 36px", borderTop: `2px solid ${C.amber}`, borderBottom: `2px solid ${C.amber}` }}>
+      <p style={{ fontFamily: PLAYFAIR, fontSize: "clamp(18px,2.2vw,26px)", fontStyle: "italic", color: C.cream, lineHeight: 1.4, textAlign: "center", margin: 0 }}>
+        "{quote}"
+      </p>
+      {cite && (
+        <cite style={{ display: "block", textAlign: "center", marginTop: 14, fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: C.textDim, textTransform: "uppercase", fontStyle: "normal" }}>
+          — {cite}
+        </cite>
+      )}
     </div>
   );
 }
 
-function StatRow({ stats }) {
-  return (
-    <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))", gap:1,
-                  background:C.border, border:`1px solid ${C.border}`, borderRadius:4, overflow:"hidden", margin:"36px 0" }}>
-      {stats.map(({ num, desc }) => (
-        <div key={desc} style={{ background:C.bg2, padding:"24px 16px", textAlign:"center" }}>
-          <span style={{ fontFamily:PLAYFAIR, fontSize:32, fontWeight:700, color:C.amberLight, display:"block", lineHeight:1, marginBottom:6 }}>{num}</span>
-          <span style={{ fontFamily:MONO, fontSize:9, letterSpacing:2, textTransform:"uppercase", color:C.textDim }}>{desc}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Card({ icon, title, body }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{ background:C.bg2, border:`1px solid ${hov ? C.borderBright : C.border}`, borderRadius:4,
-               padding:28, position:"relative", overflow:"hidden", transition:"border-color .3s, transform .3s",
-               transform: hov ? "translateY(-3px)" : "none" }}>
-      <div style={{ position:"absolute", top:0, left:0, width:3, height:"100%", background:C.greenBright, opacity: hov ? 1 : 0, transition:"opacity .3s" }} />
-      <span style={{ fontSize:32, marginBottom:16, display:"block" }}>{icon}</span>
-      <div style={{ fontFamily:PLAYFAIR, fontSize:20, fontWeight:700, color:C.cream, marginBottom:12 }}>{title}</div>
-      <p style={{ fontSize:14, color:C.textDim, lineHeight:1.7, margin:0 }}>{body}</p>
-    </div>
-  );
-}
-
-function CardGrid({ items }) {
-  return (
-    <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:20, marginTop:32 }}>
-      {items.map((it) => <Card key={it.title} {...it} />)}
-    </div>
-  );
-}
-
-function RecordCard({ emoji, val, label }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ border:`1px solid ${C.border}`, borderRadius:4, padding:22, background:C.bg2, textAlign:"center",
-               transition:"transform .2s", transform: hov ? "scale(1.02)" : "scale(1)" }}>
-      <span style={{ fontSize:36, marginBottom:12, display:"block" }}>{emoji}</span>
-      <span style={{ fontFamily:PLAYFAIR, fontSize:28, fontWeight:700, color:C.amberLight, display:"block", marginBottom:6, lineHeight:1 }}>{val}</span>
-      <span style={{ fontFamily:MONO, fontSize:9, letterSpacing:2, textTransform:"uppercase", color:C.textDim }}>{label}</span>
-    </div>
-  );
-}
-
-function ThreatBar({ name, pct, fill }) {
-  return (
-    <div style={{ marginBottom:20 }}>
-      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-        <span style={{ fontFamily:PLAYFAIR, fontSize:15, color:C.cream, fontWeight:700 }}>{name}</span>
-        <span style={{ fontFamily:MONO, fontSize:12, color:C.amber }}>{pct}</span>
-      </div>
-      <div style={{ height:5, background:C.border, borderRadius:3, overflow:"hidden" }}>
-        <div style={{ height:"100%", width:`${fill}%`, borderRadius:3, background:`linear-gradient(90deg,${C.greenMid},${C.greenNeon})` }} />
-      </div>
-    </div>
-  );
-}
-
-function TimelineItem({ phase, title, body }) {
-  return (
-    <div style={{ position:"relative", paddingLeft:32, marginBottom:32 }}>
-      <div style={{ position:"absolute", left:0, top:6, width:10, height:10, borderRadius:"50%",
-                    background:C.amber, border:`2px solid ${C.bg}` }} />
-      <div style={{ fontFamily:MONO, fontSize:9, letterSpacing:2, textTransform:"uppercase", color:C.greenBright, marginBottom:6 }}>{phase}</div>
-      <div style={{ fontFamily:PLAYFAIR, fontSize:17, fontWeight:700, color:C.cream, marginBottom:8 }}>{title}</div>
-      <p style={{ fontSize:14, color:C.textDim, lineHeight:1.7, margin:0 }}>{body}</p>
-    </div>
-  );
-}
-
-function StepList({ steps }) {
-  return (
-    <ol style={{ listStyle:"none", counterReset:"steps", padding:0 }}>
-      {steps.map((step, i) => (
-        <li key={i} style={{ counterIncrement:"steps", position:"relative", paddingLeft:44, marginBottom:18,
-                              fontSize:14.5, color:C.text, lineHeight:1.7 }}>
-          <span style={{ position:"absolute", left:0, top:0, fontFamily:MONO, fontSize:18, fontWeight:700,
-                         color:C.greenBright, lineHeight:1.4 }}>
-            {String(i+1).padStart(2,"0")}
-          </span>
-          {step}
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function Tag({ children }) {
-  return (
-    <span style={{ display:"inline-block", background:C.greenDeep, color:C.greenBright, fontFamily:MONO,
-                   fontSize:10, letterSpacing:1, padding:"3px 10px", borderRadius:2, margin:2, border:`1px solid ${C.border}` }}>
-      {children}
-    </span>
-  );
-}
-
-/* ─────────── SECTIONS DATA ─────────── */
-
-const CASTES = [
-  { name:"Minims",         head:"< 1 mm",   body:"~2 mm",  role:"Tend fungus; ride leaf fragments vs. phorid flies; clean brood", feat:"Smallest workers; live almost entirely underground" },
-  { name:"Minors",         head:"1.8–2.2mm",body:"~4–6mm", role:"First line of defense; patrol foraging columns; attack threats aggressively", feat:"Highly abundant; continuously patrol terrain" },
-  { name:"Mediae",         head:"2.2–4mm",  body:"~8–12mm",role:"Primary leaf-cutters and transporters; general-purpose foragers", feat:"Most visible caste; cut fragments up to 20× their body weight" },
-  { name:"Majors (Soldiers)",head:"5–7mm",  body:"14–16mm",role:"Colony defense; clearing large debris; carrying bulky items", feat:"Massive, disproportionately large heads; powerful mandibles; roadwork crew" },
-  { name:"Queen",          head:"~10mm",    body:"22–30mm",role:"Sole reproducer; 25,000+ eggs per day in a mature colony", feat:"Largest individual; lives 10–20 years; up to 200M lifetime offspring" },
-  { name:"Alates (Males)", head:"—",        body:"~15–20mm",role:"Mating flights only; die shortly after mating", feat:"Winged; produced seasonally; shorter-lived than any other caste" },
-];
-
-const STEPS = [
-  <><strong>Scouting & Selection:</strong> Scout ants locate and evaluate plants using chemical cues, actively avoiding plants with endophytic fungi or inhibitory compounds — demonstrating sophisticated collective food evaluation.</>,
-  <><strong>Cutting:</strong> Mediae workers cut leaf fragments using vibrating mandibles (1,000 cycles/sec). Only ~12% of cutting happens outside the nest — 88% occurs underground as fragments are progressively reduced.</>,
-  <><strong>Transport:</strong> Workers carry fragments — often larger than their own bodies — along established pheromone trails, using "direct" ant-to-ant relay or "indirect" drop-and-pickup transfer.</>,
-  <><strong>Pre-processing:</strong> Smaller workers lick leaf surfaces clean, removing anti-fungal compounds and waxy cuticles. Fecal droplets with enzymes are applied to begin breaking down plant cell walls.</>,
-  <><strong>Inoculation:</strong> Minim workers carefully inoculate the prepared leaf pulp with fungal threads, placing material within existing garden structures to colonize the new substrate.</>,
-  <><strong>Tending the Garden:</strong> Minims continuously weed the garden, removing competing organisms and grooming the fungal mass. Metapleural gland secretions suppress pathogen growth colony-wide.</>,
-  <><strong>Harvesting Gongylidia:</strong> Workers harvest gongylidia — protein and lipid-rich swellings on fungal hyphae tips — and distribute them to larvae and the queen. Adults mainly subsist on plant sap.</>,
-  <><strong>Waste Management:</strong> Spent fungal substrate and organic waste are transported to dedicated refuse chambers, isolated from the rest of the nest to prevent cross-contamination.</>,
-];
-
-const THREATS = [
-  { name:"Chemical Antimicrobials (Metapleural Gland)", pct:"Highly Effective", fill:92 },
-  { name:"Bacterial Bioweapons (Pseudonocardia)", pct:"Effective", fill:78 },
-  { name:"Soldier Caste Defense", pct:"Effective", fill:75 },
-  { name:"Minim Hitchhikers vs. Phorid Flies", pct:"Moderate", fill:60 },
-  { name:"Garden Weeding vs. Escovopsis", pct:"Partial — ongoing arms race", fill:50 },
-];
-
-const TIMELINE = [
-  { phase:"Phase 01", title:"The Nuptial Flight — The Revoada",
-    body:"Triggered by the start of the rainy season, colonies simultaneously release winged alates — reproductive females and males — into synchronized aerial swarms. This synchrony maximizes cross-colony mating opportunities." },
-  { phase:"Phase 02", title:"Mating — 300 Million Sperm",
-    body:"Each female mates with multiple males in flight, storing ~300 million sperm in her spermatheca — enough to fertilize eggs for 15–20 years. Males die shortly after mating. The colony's entire genetic future depends on this single flight." },
-  { phase:"Phase 03", title:"The Founding — A Cargo of Life",
-    body:"The fertilized queen lands, sheds her wings, and excavates a small chamber. Before leaving her birth colony, she loaded a pellet of fungus into her infrabuccal pocket — her starter culture. She deposits and fertilizes it, beginning cultivation alone." },
-  { phase:"Phase 04", title:"The Dangerous First Years",
-    body:"The queen is entirely alone, surviving by metabolizing her flight muscles and unfertilized eggs. Only ~2.5% of new queens establish long-lived colonies. Nearly 60% of 1–2 year old colonies show Escovopsis contamination." },
-  { phase:"Phase 05", title:"The Colony Ignites",
-    body:"First eggs develop into nanitics — small but functional workers — after 40–50 days. They take over care within a week, then begin foraging. Egg-laying intensifies exponentially. The colony that will eventually house millions of workers has begun." },
-];
-
-const RECORDS = [
-  { emoji:"🏋️", val:"50×",          label:"Body weight carried" },
-  { emoji:"💪", val:"2,600×",        label:"Body weight in bite force" },
-  { emoji:"🏙️", val:"10M",           label:"Workers in one colony" },
-  { emoji:"🌿", val:"1 tree / day",  label:"Colony defoliation rate" },
-  { emoji:"⏳", val:"50M yrs",       label:"History of ant farming" },
-  { emoji:"🔬", val:"1,000×/sec",    label:"Mandible vibration rate" },
-  { emoji:"🪨", val:"40 tons",       label:"Soil moved per mature nest" },
-  { emoji:"🥚", val:"200M",          label:"Offspring per queen lifetime" },
-  { emoji:"🏠", val:"30m wide",      label:"Max nest mound diameter" },
-  { emoji:"🌡️", val:"100,000×",     label:"Higher CO₂ than surrounding soil (nest vents)" },
-  { emoji:"🌎", val:"#1",            label:"Largest invertebrate herbivores in Western Hemisphere" },
-  { emoji:"👑", val:"15–20 yrs",     label:"Queen lifespan" },
-];
-
-const DEFENSE_CARDS = [
-  { icon:"🪰", title:"Phorid Flies",        body:"Parasitic flies attack during daylight, dive-bombing leaf-carriers to lay eggs in their head capsule. Ants deploy minim 'bodyguard' riders on carried leaves and adjust foraging times and body-size composition in high-phorid-pressure areas." },
-  { icon:"🍄", title:"Escovopsis Fungus",   body:"A dedicated garden pathogen co-evolved specifically to exploit the cultivated fungus. Can devastate an entire garden. The ants counter with bacterial bioweapons (Pseudonocardia), physical weeding, and quarantine protocols." },
-  { icon:"🐜", title:"Rival Ant Colonies",  body:"Trail pheromones encode colony identity. Encountering a rival trail triggers aggressive overwriting behavior. Direct conflict between large colonies occurs on contested foraging grounds." },
-  { icon:"🦎", title:"Vertebrate Predators",body:"Army ants, anteaters, armadillos, and various birds and lizards prey on leaf cutters. The soldier caste provides surface defense; deep nest architecture protects the core colony from most vertebrate threats." },
-];
-
-const ECOLOGY_CARDS = [
-  { icon:"🌱", title:"Soil Transformation",  body:"Nest excavation mixes deep mineral soil with upper organic layers, increasing porosity, water-holding capacity, and nutrient heterogeneity. A single large nest can reshape local terrain." },
-  { icon:"🌿", title:"Nitrogen Fixation",    body:"Symbiotic bacteria in fungal gardens fix nitrogen. Refuse dumps act as local nutrient hotspots — plants growing on abandoned refuse dump sites show measurably higher fitness than those in adjacent non-nest soils." },
-  { icon:"🌍", title:"Carbon Cycling",       body:"Nest vents emit CO₂ at 10,000–100,000× surrounding soil rates. Atta cephalotes colonies account for 0.2–0.7% of CO₂ from neotropical rainforests — a contribution not yet reflected in global carbon models." },
-  { icon:"🌳", title:"Plant Community Shaping", body:"By selectively harvesting certain plants, leaf cutters shape local plant composition. Abandoned nest sites become nutrient hotspots with markedly increased species diversity. Their herbivory opens the canopy, letting light reach the forest floor." },
-  { icon:"🚨", title:"Agricultural Pest Status", body:"Over $1 billion in annual Latin American crop losses. They defoliate coffee, eucalyptus, citrus, and sugar cane. In pine plantations with >30 nests/hectare, wood productivity can drop by up to 50%." },
-  { icon:"🧬", title:"Antibiotic Research",  body:"Pseudonocardia compounds produced to suppress Escovopsis represent potential templates for new antibiotic classes. These ants have been running a drug discovery program for 50 million years." },
-];
-
-const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical Ecology","Chemical Ecology","Biomimicry","Antibiotic Research","Soil Engineering","Mutualism","Coevolution","Neotropics","Carbon Cycle"];
-
-/* ─────────── MAIN COMPONENT ─────────── */
-
+/* 3. THE MAIN REPORT */
 export default function LeafCutterAntReport() {
-  /* inject Google Fonts */
   useEffect(() => {
-    if (!document.querySelector("#lcant-fonts")) {
-      const l = document.createElement("link");
-      l.id = "lcant-fonts"; l.rel = "stylesheet"; l.href = FONTS;
-      document.head.appendChild(l);
-    }
-    /* global reset */
     document.body.style.margin = "0";
     document.body.style.background = C.bg;
   }, []);
 
-  const scroll = (id) => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
-
-  const sections = ["overview","taxonomy","anatomy","fungus","colony","nest","foraging","defense","reproduction","ecology","records"];
-
   return (
-    <div style={{ background:C.bg, color:C.text, fontFamily:SERIF, fontWeight:300, lineHeight:1.75, overflowX:"hidden" }}>
-
-      {/* ── TOC dots ── */}
-      <nav style={{ position:"fixed", right:20, top:"50%", transform:"translateY(-50%)", display:"flex",
-                    flexDirection:"column", gap:10, zIndex:100 }}>
-        {sections.map((id, i) => (
-          <div key={id} onClick={() => scroll(id)}
-            style={{ width:6, height:6, borderRadius:"50%", background:C.borderBright, cursor:"pointer",
-                     transition:"background .2s, transform .2s" }}
-            onMouseEnter={e => { e.target.style.background=C.greenNeon; e.target.style.transform="scale(1.8)"; }}
-            onMouseLeave={e => { e.target.style.background=C.borderBright; e.target.style.transform="scale(1)"; }}
-          />
-        ))}
-      </nav>
-
-      {/* ── HERO ── */}
-      <header style={{ position:"relative", minHeight:"100vh", display:"flex", flexDirection:"column",
-                       justifyContent:"center", alignItems:"center", textAlign:"center", padding:"80px 40px",
-                       overflow:"hidden",
-                       background:`radial-gradient(ellipse at 30% 60%,#1a4a0a 0%,transparent 55%),radial-gradient(ellipse at 75% 20%,#0a2a05 0%,transparent 50%),${C.bg}` }}>
-        <style>{`
-          @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-          @keyframes float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-          .ant-float { animation: fadeUp .9s ease .1s both, float 4s ease-in-out infinite 1.5s; }
-          .fade1 { animation: fadeUp .8s ease .2s both; }
-          .fade2 { animation: fadeUp .9s ease .4s both; }
-          .fade3 { animation: fadeUp .9s ease .6s both; }
-          .fade4 { animation: fadeUp .9s ease .8s both; }
-          .fade5 { animation: fadeUp .9s ease 1s both; }
-          .fade6 { animation: fadeUp .9s ease 1.2s both; }
-        `}</style>
-
-        {/* grid overlay */}
-        <div style={{ position:"absolute", inset:0, pointerEvents:"none",
-                      backgroundImage:"repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(76,175,80,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(76,175,80,0.04) 40px)" }} />
-
-        <span className="ant-float" style={{ fontSize:80, marginBottom:16, display:"block" }}>🐜</span>
-        <div className="fade1" style={{ fontFamily:MONO, fontSize:11, letterSpacing:4, textTransform:"uppercase", color:C.greenBright, marginBottom:28 }}>
-          Deep Research Report · Insect Entomology
-        </div>
-        <h1 className="fade2" style={{ fontFamily:PLAYFAIR, fontSize:"clamp(52px,9vw,120px)", fontWeight:900,
-                                        lineHeight:0.92, letterSpacing:"-2px", color:C.cream, marginBottom:12 }}>
-          Leaf<span style={{ fontStyle:"italic", color:C.greenBright }}>cutter</span><br/>Ants
-        </h1>
-        <p className="fade3" style={{ fontFamily:PLAYFAIR, fontStyle:"italic", fontSize:"clamp(18px,2.5vw,28px)", color:C.amber, marginBottom:36 }}>
-          Nature's Original Farmers — 50 Million Years in the Making
-        </p>
-        <p className="fade4" style={{ maxWidth:640, fontSize:16, color:C.textDim, lineHeight:1.8 }}>
-          They do not eat a single leaf they cut. Instead, they run the world's oldest and most sophisticated agricultural civilization underground — a living superorganism that builds cities, farms fungi, deploys antibiotics, and moves the jungle itself.
-        </p>
-
-        <div className="fade5" style={{ marginTop:48, display:"flex", gap:40, justifyContent:"center", flexWrap:"wrap" }}>
-          {[["55+","Species"],["10M","Workers / Colony"],["50M","Years of Farming"],["800mN","Bite Force"]].map(([n,l]) => (
-            <div key={l} style={{ textAlign:"center" }}>
-              <span style={{ fontFamily:PLAYFAIR, fontSize:36, fontWeight:700, color:C.greenNeon, lineHeight:1, display:"block" }}>{n}</span>
-              <span style={{ fontFamily:MONO, fontSize:9, letterSpacing:2, textTransform:"uppercase", color:C.textDim }}>{l}</span>
-            </div>
-          ))}
-        </div>
-        <div className="fade6" style={{ marginTop:60, fontFamily:MONO, fontSize:10, letterSpacing:3, color:C.borderBright, textTransform:"uppercase" }}>
-          ↓ Scroll to Explore ↓
-        </div>
-      </header>
-
-      {/* ── MAIN ── */}
-      <main style={{ maxWidth:1100, margin:"0 auto", padding:"0 32px 80px" }}>
-
-        {/* 01 OVERVIEW */}
-        <section id="overview" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="01">Overview</SectionLabel>
-          <SectionTitle>What <em style={{ color:C.greenBright, fontStyle:"italic" }}>Are</em> Leaf Cutter Ants?</SectionTitle>
-          <Lead>They are not leaf-eaters. They are leaf-processors, fungus-farmers, and ecosystem engineers — the most dominant invertebrate herbivores in the entire Western Hemisphere.</Lead>
-          <p style={{ marginBottom:18 }}>Leaf cutter ants are among the most extraordinary organisms on Earth. At a glance, they seem simple: a long procession of ants each holding a piece of leaf over their heads, marching in military precision through the jungle. But this is the surface of something staggeringly complex. <strong style={{ color:C.cream }}>These ants invented agriculture 50 million years before humans did.</strong></p>
-          <p style={{ marginBottom:18 }}>They are found across South and Central America, Mexico, and parts of the southern United States, inhabiting rainforests, woodlands, and increasingly the edges of human farmland. Despite their small individual size — workers range from 2mm to 16mm — their collective impact rivals that of large mammals. <strong style={{ color:C.cream }}>A single mature colony can strip an entire tree bare in a single day.</strong></p>
-          <p style={{ marginBottom:18 }}>What makes them genuinely alien in their sophistication is the complete interdependency they have evolved with a fungus, a bacterium, and a set of parasitic enemies — a four-way biological arms race that has been running for tens of millions of years, producing a system so refined it borders on the miraculous.</p>
-          <StatRow stats={[
-            { num:"50×",  desc:"Own body weight they can carry" },
-            { num:"2,600×", desc:"Body weight in bite force" },
-            { num:"500m+", desc:"Length of foraging trails" },
-            { num:"$1B+", desc:"Agricultural damage annually" },
-            { num:"40T",  desc:"Tons of soil moved per nest" },
-          ]} />
-        </section>
+    <div style={{ background: C.bg, color: C.text, fontFamily: SERIF, fontWeight: 300, lineHeight: 1.75, padding: "60px 20px" }}>
+      <main style={{ maxWidth: 800, margin: "0 auto" }}>
+        
+        <SectionLabel num="01">Overview</SectionLabel>
+        <SectionTitle>The Agricultural Architects</SectionTitle>
+        <Lead>Leafcutter ants are the world's first farmers, cultivating massive fungus gardens deep underground.</Lead>
+        
+        <p>They do not eat the leaves they harvest. Instead, they use them as fertilizer to grow a specific type of fungus, which serves as their sole food source.</p>
 
         <Divider />
 
-        {/* 02 TAXONOMY */}
-        <section id="taxonomy" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="02">Taxonomy & Classification</SectionLabel>
-          <SectionTitle>Classification & <em style={{ color:C.greenBright, fontStyle:"italic" }}>Relatives</em></SectionTitle>
-          <Lead>Leaf cutter ants belong to three genera within the tribe Attini — the fungus-growing ants — a group whose agricultural origins trace back at least 50 million years.</Lead>
+        <PullQuote 
+          quote="These ants have maintained a mutualistic fungal crop that has remained genetically distinct from wild relatives for 50 million years." 
+          cite="Evolutionary Biology of Attini" 
+        />
 
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }}>
-            <div>
-              <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Taxonomic Hierarchy:</strong></p>
-              <div style={{ margin:"18px 0", padding:20, background:C.bg2, border:`1px solid ${C.border}`, borderRadius:4,
-                            fontFamily:MONO, fontSize:12, lineHeight:2.1 }}>
-                {[["Kingdom","Animalia"],["Phylum","Arthropoda"],["Class","Insecta"],["Order","Hymenoptera"],
-                  ["Family","Formicidae"],["Tribe","Attini"],["Genera","Atta · Acromyrmex · Amoimyrmex"]
-                ].map(([k,v]) => (
-                  <div key={k}>{k}: <span style={{ color: k === "Genera" ? C.amberLight : C.greenBright }}>{v}</span></div>
-                ))}
-              </div>
-              <p style={{ marginBottom:18 }}>There are at least <strong style={{ color:C.cream }}>55 recognized species</strong> of leaf cutter ants across three genera. <strong style={{ color:C.cream }}>Atta</strong> and <strong style={{ color:C.cream }}>Acromyrmex</strong> are the most well-studied. <strong style={{ color:C.cream }}>Amoimyrmex</strong> was only recently recognized as a distinct genus through phylogenetic analysis.</p>
-            </div>
-            <div>
-              <p style={{ marginBottom:12 }}><strong style={{ color:C.cream }}>Key Species:</strong></p>
-              {[
-                { title:"Atta cephalotes",  body:"The most-studied species. Found across Central and South America. Forms the largest and most complex colonies with up to 10 million workers." },
-                { title:"Atta texana",      body:"The Texas leaf-cutting ant — the only species found extensively in the United States. A major agricultural pest in Texas and Louisiana." },
-                { title:"Acromyrmex spp.", body:"Smaller colonies than Atta, with rougher exoskeletons and four pairs of spines vs. three in Atta. Less extreme caste size polymorphism." },
-              ].map(({ title, body }) => (
-                <div key={title} style={{ background:C.bg2, border:`1px solid ${C.border}`, borderRadius:4, padding:22, marginBottom:12 }}>
-                  <div style={{ fontFamily:PLAYFAIR, fontSize:16, fontWeight:700, color:C.cream, marginBottom:8 }}>{title}</div>
-                  <p style={{ fontSize:14, color:C.textDim, lineHeight:1.7, margin:0 }}>{body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        <p>A single colony can contain millions of individuals, moving more earth than almost any other creature.</p>
 
-          <FactBox label="Evolutionary Origin">
-            Leaf-cutting ants evolved fungal agriculture roughly 50 million years ago — making them the first farmers on Earth, long predating humans by geological epochs. Their ancestral lineage likely began in dry, fire-prone savannas before adapting to humid rainforests.
-          </FactBox>
-        </section>
-
-        <Divider />
-
-        {/* 03 ANATOMY */}
-        <section id="anatomy" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="03">Anatomy & Caste System</SectionLabel>
-          <SectionTitle>The <em style={{ color:C.greenBright, fontStyle:"italic" }}>Four Castes</em> — A Body for Every Job</SectionTitle>
-          <Lead>Leaf cutter ant colonies exhibit extreme physical polymorphism — individual ants of the same species can differ so dramatically in size and anatomy that they look like entirely different organisms.</Lead>
-          <p style={{ marginBottom:18 }}>Within a single colony, workers range from <strong style={{ color:C.cream }}>2mm minims</strong> tending fungus gardens to <strong style={{ color:C.cream }}>16mm soldiers</strong> with heads so large they resemble a different species. Each body type is a precisely engineered tool for a specific task — head size determines jaw power, which determines role.</p>
-
-          {/* caste table */}
-          <div style={{ overflowX:"auto", margin:"32px 0" }}>
-            <table style={{ width:"100%", borderCollapse:"collapse", fontSize:14 }}>
-              <thead>
-                <tr>
-                  {["Caste","Head Width","Body Length","Primary Role","Key Features"].map(h => (
-                    <th key={h} style={{ background:C.greenDeep, color:C.greenNeon, fontFamily:MONO, fontSize:9,
-                                         letterSpacing:2, textTransform:"uppercase", padding:"14px 18px",
-                                         textAlign:"left", borderBottom:`2px solid ${C.greenBright}`, fontWeight:400 }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {CASTES.map((row, i) => (
-                  <tr key={row.name} style={{ background: i % 2 === 0 ? C.bg2 : "transparent" }}>
-                    <td style={{ padding:"14px 18px", borderBottom:`1px solid ${C.border}` }}>
-                      <span style={{ fontFamily:PLAYFAIR, fontWeight:700, color:C.cream, fontSize:15 }}>{row.name}</span>
-                    </td>
-                    <td style={{ padding:"14px 18px", borderBottom:`1px solid ${C.border}`, fontFamily:MONO, fontSize:12, color:C.amber }}>{row.head}</td>
-                    <td style={{ padding:"14px 18px", borderBottom:`1px solid ${C.border}`, fontFamily:MONO, fontSize:12, color:C.amber }}>{row.body}</td>
-                    <td style={{ padding:"14px 18px", borderBottom:`1px solid ${C.border}`, color:C.text, lineHeight:1.6 }}>{row.role}</td>
-                    <td style={{ padding:"14px 18px", borderBottom:`1px solid ${C.border}`, color:C.textDim, lineHeight:1.6 }}>{row.feat}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Mandible Engineering:</strong> The mandibles of leaf cutter ants vibrate at approximately <strong style={{ color:C.cream }}>1,000 cycles per second</strong> during cutting — functioning as a biological jigsaw. Bite force has been measured at <strong style={{ color:C.cream }}>800 millinewtons</strong>, equivalent to 2,600× their body weight. Cutting strategy shifts by leaf geometry: straight edges use a "scissor-cutting" motion; notched edges switch to a "knife-cutting" approach.</p>
-
-          <FactBox label="Exoskeleton Technology">
-            The exoskeleton of leaf cutter ants is coated in a thin layer of mineral crystals — rhombohedral in structure and generated by the ants themselves — which appears to protect the cuticle surface and may contribute to the mechanical properties of the ant's cutting ability.
-          </FactBox>
-        </section>
-
-        <Divider />
-
-        {/* 04 FUNGUS */}
-        <section id="fungus" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="04">The Fungal Agriculture System</SectionLabel>
-          <SectionTitle>The World's First <em style={{ color:C.greenBright, fontStyle:"italic" }}>Farmers</em></SectionTitle>
-          <Lead>Leaf cutter ants do not eat leaves. They are precision farmers who use vegetation as substrate to cultivate a symbiotic fungus — their sole food source — in climate-controlled underground chambers.</Lead>
-
-          <p style={{ marginBottom:18 }}>The fungus they cultivate — <strong style={{ color:C.cream }}>Leucoagaricus gongylophorus</strong> — is a basidiomycete so thoroughly domesticated over millions of years of coevolution that it now produces specialized nutritional bodies called <strong style={{ color:C.cream }}>gongylidia</strong> — swollen hyphal tips rich in nutrients — actively harvested by the ants. The fungus, in return, gets a perfectly maintained substrate and protection.</p>
-
-          <div style={{ background:C.bg2, border:`1px solid ${C.border}`, borderRadius:4, overflow:"hidden", margin:"32px 0" }}>
-            <div style={{ background:C.greenDeep, padding:"16px 24px", fontFamily:MONO, fontSize:10,
-                          letterSpacing:3, textTransform:"uppercase", color:C.greenNeon }}>
-              🍄 The Farming Process — Step by Step
-            </div>
-            <div style={{ padding:24 }}>
-              <StepList steps={STEPS} />
-            </div>
-          </div>
-
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }}>
-            <div>
-              <h3 style={{ fontFamily:PLAYFAIR, color:C.cream, marginBottom:16, fontSize:20 }}>The Antibiotic Layer</h3>
-              <p style={{ marginBottom:18 }}>Growing on the cuticle surface of leaf cutter ants is a third symbiotic partner: <strong style={{ color:C.cream }}>Pseudonocardia bacteria</strong>. These bacteria are cultivated in specialized grooves on the ant's exoskeleton, producing antifungal metabolites that protect the garden from the most dangerous pathogen in the system: <strong style={{ color:C.cream }}>Escovopsis</strong>.</p>
-              <p>This bacterium is passed down across generations — queens carry it from their birth nest when founding new colonies — making it a vertically transmitted mutualist just like the fungus itself.</p>
-            </div>
-            <div>
-              <h3 style={{ fontFamily:PLAYFAIR, color:C.cream, marginBottom:16, fontSize:20 }}>The Invisible Enemy — Escovopsis</h3>
-              <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Escovopsis</strong> is a highly virulent parasitic fungus that specifically targets the leafcutter ant's cultivated fungus. Left unchecked, it can rapidly overrun an entire garden and collapse a colony. In young colonies (1–2 years old), nearly <strong style={{ color:C.cream }}>60% have Escovopsis contamination</strong>.</p>
-              <p>In a remarkable arms race, Escovopsis produces specialized compounds targeting both the Pseudonocardia AND reducing worker behavioral defenses. The ants counter with weeding, grooming, and accelerating Pseudonocardia production — an ongoing evolutionary war running for millions of years.</p>
-            </div>
-          </div>
-
-          <PullQuote
-            quote="These ants have maintained a mutualistic fungal crop that has remained genetically distinct from wild relatives for millions of years — a feat no human agricultural civilization has come close to achieving."
-            cite="Research synthesis, evolutionary biology of Attini"
-          />
-        </section>
-
-        <Divider />
-
-        {/* 05 COLONY */}
-        <section id="colony" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="05">Colony Structure & Social Organization</SectionLabel>
-          <SectionTitle>The <em style={{ color:C.greenBright, fontStyle:"italic" }}>Superorganism</em> — A City Underground</SectionTitle>
-          <Lead>A mature leaf cutter ant colony is not merely a group of insects. It functions as a single integrated superorganism — with specialization, division of labor, immune responses, agriculture, and infrastructure that mirrors the complexity of a human city.</Lead>
-          <p style={{ marginBottom:18 }}>Colony sizes vary dramatically. <em>Atta</em> colonies contain <strong style={{ color:C.cream }}>1 to 10 million workers</strong> when mature. These colonies take 4–6 years to reach full maturity and may persist for <strong style={{ color:C.cream }}>10 to 20 years</strong> as long as the founding queen remains alive. When the queen dies, the colony has no replacement mechanism — worker populations dwindle and the colony eventually collapses.</p>
-          <StatRow stats={[
-            { num:"1–10M",    desc:"Workers in Atta colonies" },
-            { num:"25,000+",  desc:"Eggs per day (mature colony)" },
-            { num:"200M",     desc:"Lifetime offspring of queen" },
-            { num:"15–20 yrs",desc:"Queen lifespan" },
-            { num:"2.5%",     desc:"New queen success rate" },
-          ]} />
-          <p style={{ marginBottom:18, marginTop:28 }}><strong style={{ color:C.cream }}>Division of Labor:</strong> The colony operates through age-based and size-based division of labor. Newly emerged workers begin in the safest inner roles — tending fungus and caring for brood — and graduate to foraging and defense roles as they age. This means the most expendable workers (those nearing end of lifespan) are also taking on the most dangerous surface work.</p>
-          <p><strong style={{ color:C.cream }}>Social Immunity:</strong> The colony collectively manages disease as a single immune system. Workers detect infected garden sections chemically, isolate contaminated material, and remove it to waste chambers. The metapleural gland — a unique organ above the hind leg — secretes antimicrobials colony-wide. The colony responds to infection events like a body mobilizing white blood cells.</p>
-        </section>
-
-        <Divider />
-
-        {/* 06 NEST */}
-        <section id="nest" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="06">Nest Architecture</SectionLabel>
-          <SectionTitle>Underground <em style={{ color:C.greenBright, fontStyle:"italic" }}>Cities</em></SectionTitle>
-          <Lead>Leaf cutter ant nests are among the most architecturally complex structures built by any non-human organism — vast subterranean networks of chambers, tunnels, ventilation shafts, and waste dumps.</Lead>
-
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start" }}>
-            <div>
-              <p style={{ marginBottom:18 }}>A mature <em>Atta</em> nest can reach <strong style={{ color:C.cream }}>9 meters deep</strong>, with a central mound growing to <strong style={{ color:C.cream }}>30 meters across</strong>. Sub-entrances radiate outward up to <strong style={{ color:C.cream }}>80 meters</strong> from the main nest. The total inhabited area can cover <strong style={{ color:C.cream }}>30 to 600 square meters</strong>.</p>
-              <p style={{ marginBottom:18 }}>During construction, <strong style={{ color:C.cream }}>up to 40 tons of soil</strong> may be excavated — a bioturbation process that profoundly alters local landscape, soil composition, and hydrology.</p>
-              <p>The nest contains hundreds of interconnected chambers: fungal gardens at depths with optimal humidity and temperature; nurseries for eggs and larvae; isolated refuse dumps; and a deep central chamber housing the queen.</p>
-            </div>
-            <div>
-              <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Ventilation Engineering:</strong> "Chimney-like" gas vents vent CO₂ produced by millions of inhabitants and fungal metabolism below. These vents emit CO₂ at rates <strong style={{ color:C.cream }}>10,000 to 100,000× greater</strong> than surrounding soil. Workers actively manage tunnel openings in response to temperature, CO₂ levels, and flooding threats.</p>
-              <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Climate Control:</strong> The depth and architecture creates a stable microclimate. Fungus garden chambers are maintained at precise humidity and temperature levels optimal for fungal growth — passive environmental engineering with no moving parts.</p>
-              <p><strong style={{ color:C.cream }}>Nest Longevity:</strong> Once established, nests persist for <strong style={{ color:C.cream }}>up to 20 years</strong>. These are not temporary structures — they are permanent underground civilizations.</p>
-            </div>
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* 07 FORAGING */}
-        <section id="foraging" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="07">Foraging Behavior & Communication</SectionLabel>
-          <SectionTitle>The <em style={{ color:C.greenBright, fontStyle:"italic" }}>Highway System</em> of the Forest</SectionTitle>
-          <Lead>Leaf cutter ant foraging trails are among the most efficient and organized transportation networks in the natural world — self-organized with dynamic routing that adjusts to conditions in real time.</Lead>
-
-          <p style={{ marginBottom:18 }}>Foraging trails can extend <strong style={{ color:C.cream }}>over 500 meters</strong> from the nest entrance, cut through undergrowth, and incorporate fallen logs and exposed roots as elevated pathways — smooth surfaces increase walking speed, so ants actively seek them out. Pheromone deposits on wood persist longer than on soil, reinforcing these efficient routes.</p>
-          <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Trail Pheromones:</strong> The concentration of pheromone at a food source reflects both the desirability of the plant material AND the number of ants already exploiting it. This creates a self-regulating feedback system: highly desirable, lightly exploited food attracts more ants; saturated or low-quality sources receive fewer recruits.</p>
-          <p style={{ marginBottom:18 }}><strong style={{ color:C.cream }}>Plant Selection Intelligence:</strong> Leaf cutter ants assess leaf chemistry before and after cutting, using olfactory memory to avoid plants whose secondary metabolites inhibit fungal growth. This learning process — delayed avoidance based on observed effects on the fungus garden — represents sophisticated collective distributed cognition.</p>
-
-          <FactBox label="The Hitchhiker Defense">
-            While leaf-carrying mediae ants are vulnerable to attack from phorid flies — which land on their heads and lay eggs directly into the head capsule — they cannot defend themselves while carrying leaves. The solution: minim workers ride on top of the carried leaf fragment, acting as mobile bodyguards specifically deployed to deter the flies.
-          </FactBox>
-        </section>
-
-        <Divider />
-
-        {/* 08 DEFENSE */}
-        <section id="defense" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="08">Defense, Enemies & Threats</SectionLabel>
-          <SectionTitle>Life Under <em style={{ color:C.greenBright, fontStyle:"italic" }}>Siege</em></SectionTitle>
-          <Lead>Leaf cutter ant colonies face threats from multiple directions simultaneously — from the pathogenic fungus destroying their food supply underground, to parasitic flies targeting their foragers above ground.</Lead>
-
-          <CardGrid items={DEFENSE_CARDS} />
-
-          <h3 style={{ fontFamily:PLAYFAIR, color:C.cream, margin:"36px 0 20px", fontSize:22 }}>Defense Mechanism Effectiveness</h3>
-          {THREATS.map(t => <ThreatBar key={t.name} {...t} />)}
-        </section>
-
-        <Divider />
-
-        {/* 09 REPRODUCTION */}
-        <section id="reproduction" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="09">Reproduction & Colony Founding</SectionLabel>
-          <SectionTitle>The <em style={{ color:C.greenBright, fontStyle:"italic" }}>Nuptial Flight</em> — When a Queen is Born</SectionTitle>
-          <Lead>Once a year, in a synchronized swarm across the forest, thousands of winged reproductive ants take to the sky — and the vast majority will never survive to found a colony.</Lead>
-
-          <div style={{ position:"relative", paddingLeft:32, marginTop:32,
-                        borderLeft:`2px solid`, borderImage:`linear-gradient(to bottom,${C.greenBright},${C.amber},${C.greenBright}) 1` }}>
-            {TIMELINE.map(t => <TimelineItem key={t.phase} {...t} />)}
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* 10 ECOLOGY */}
-        <section id="ecology" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="10">Ecological Impact</SectionLabel>
-          <SectionTitle>Architects of the <em style={{ color:C.greenBright, fontStyle:"italic" }}>Neotropics</em></SectionTitle>
-          <Lead>Leaf cutter ants are not merely residents of the rainforest — they are among its primary engineers, shaping soil, nutrients, plant communities, and even the global carbon cycle.</Lead>
-          <CardGrid items={ECOLOGY_CARDS} />
-        </section>
-
-        <Divider />
-
-        {/* 11 RECORDS */}
-        <section id="records" style={{ marginBottom:80, paddingTop:60 }}>
-          <SectionLabel num="11">Records, Superlatives & Mind-Blowing Facts</SectionLabel>
-          <SectionTitle>The <em style={{ color:C.greenBright, fontStyle:"italic" }}>Extremes</em></SectionTitle>
-          <Lead>When you look at what leaf cutter ants actually do — at the numbers, the mechanisms, the timescales — the picture that emerges is not of an insect. It's of a civilization.</Lead>
-
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:16, marginTop:32 }}>
-            {RECORDS.map(r => <RecordCard key={r.label} {...r} />)}
-          </div>
-
-          <PullQuote
-            quote="Leafcutter ants are the ultimate insect superorganisms — up to millions of physiologically specialized workers cooperating to cut and transport vegetation and convert it into compost used to cultivate co-evolved fungi, domesticated over millions of years."
-            cite="Stable Isotopes Study, Ecology (2018)"
-          />
-
-          <FactBox label="One Final Extraordinary Fact">
-            In parts of Latin America — particularly in Colombia and Mexico — winged queen alates are eaten seasonally as a delicacy. Roasted, they are described as having a rich, nutty flavor. This practice long predates European colonization and is tied to cultural traditions surrounding the start of the rainy season — the very moment the ants take flight.
-          </FactBox>
-
-          <div style={{ marginTop:40 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
-              <span style={{ fontFamily:MONO, fontSize:10, letterSpacing:4, textTransform:"uppercase", color:C.greenBright }}>Topic Tags</span>
-              <div style={{ flex:1, height:1, background:C.border }} />
-            </div>
-            {TAGS.map(t => <Tag key={t}>{t}</Tag>)}
-          </div>
-        </section>
-
-     </main>
-
-      </footer>
+      </main>
     </div>
   );
 }
-
-// THE RENDER - This must be the very last thing in the file
-const container = document.getElementById('app-root');
-const root = ReactDOM.createRoot(container);
-root.render(<LeafCutterAntReport />);
