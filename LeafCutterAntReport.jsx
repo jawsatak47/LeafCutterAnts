@@ -643,3 +643,9 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
     </div>
   );
 }
+
+import { createRoot } from 'react-dom/client';
+
+const container = document.getElementById('app-root');
+const root = createRoot(container);
+root.render(<YourAppName />);
