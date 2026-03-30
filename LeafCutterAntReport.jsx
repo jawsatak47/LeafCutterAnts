@@ -640,12 +640,15 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
         <p style={{ marginTop:8, opacity:0.5 }}>Atta · Acromyrmex · Amoimyrmex · Order Hymenoptera · Family Formicidae</p>
       </footer>
 
-    </div>
+   </div>
   );
 }
 
+// THIS IS THE PART YOU ADD/FIX:
 import { createRoot } from 'react-dom/client';
 
 const container = document.getElementById('app-root');
 const root = createRoot(container);
-root.render(<YourAppName />);
+
+// Replace 'App' with whatever your function name is at the top of this file
+root.render(<LeafCutterAntReport />);
