@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
 /* ─────────────────────────────────────────────
    LEAF CUTTER ANT DEEP RESEARCH REPORT
    Self-contained React component — no external
@@ -639,11 +639,9 @@ export default function LeafCutterAntReport() {
         <p>Deep Research Report · Leaf Cutter Ants <span style={{ color:C.greenBright }}>///</span> Compiled from peer-reviewed research including: San Diego Zoo Wildlife Alliance, PMC/NIH, Nature Communications, Frontiers in Ecology, Journal of Geophysical Research, Royal Society Open Science</p>
         <p style={{ marginTop:8, opacity:0.5 }}>Atta · Acromyrmex · Amoimyrmex · Order Hymenoptera · Family Formicidae</p>
       </footer>
-
     </div>
   );
 }
-
 
 const container = document.getElementById('app-root');
 const root = ReactDOM.createRoot(container);
