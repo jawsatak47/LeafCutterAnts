@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+
 
 /* ─────────────────────────────────────────────
    LEAF CUTTER ANT DEEP RESEARCH REPORT
@@ -279,7 +279,7 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
 
 /* ─────────── MAIN COMPONENT ─────────── */
 
-export default function LeafCutterAntReport() {
+
   /* inject Google Fonts */
   useEffect(() => {
     if (!document.querySelector("#lcant-fonts")) {
