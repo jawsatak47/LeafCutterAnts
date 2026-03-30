@@ -67,19 +67,12 @@ function LeafCutterAntReport() {
     <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
        
 function Divider() {
-  return <div style={{ height:1, background:`linear-gradient(90deg,transparent,${C.divider},transparent)`, margin:"60px 0" }} />;
-}
-
-function FactBox({ label, children }) {
   return (
-    <div style={{ background:`linear-gradient(135deg,${C.greenDeep},${C.bg3})`, border:`1px solid ${C.borderBright}`,
-                  borderRadius:4, padding:"32px 36px", margin:"36px 0", position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", bottom:-10, right:16, fontSize:80, opacity:0.07, lineHeight:1 }}>🐜</div>
-      <div style={{ fontFamily:MONO, fontSize:9, letterSpacing:3, textTransform:"uppercase", color:C.greenNeon, marginBottom:10 }}>{label}</div>
-      <p style={{ fontFamily:PLAYFAIR, fontSize:"clamp(18px,2.5vw,24px)", color:C.cream, lineHeight:1.4, fontStyle:"italic", margin:0 }}>
-        {children}
-      </p>
-    </div>
+    <div style={{ 
+      height: 1, 
+      background: `linear-gradient(90deg, transparent, ${C.divider}, transparent)`, 
+      margin: "60px 0" 
+    }} />
   );
 }
 
