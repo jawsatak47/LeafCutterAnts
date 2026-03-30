@@ -640,14 +640,12 @@ export default function LeafCutterAntReport() {
                        fontFamily:MONO, fontSize:10, letterSpacing:2, color:C.textDim }}>
         <p>Deep Research Report · Leaf Cutter Ants <span style={{ color:C.greenBright }}>///</span> Compiled from peer-reviewed research including: San Diego Zoo Wildlife Alliance, PMC/NIH, Nature Communications, Frontiers in Ecology, Journal of Geophysical Research, Royal Society Open Science</p>
         <p style={{ marginTop:8, opacity:0.5 }}>Atta · Acromyrmex · Amoimyrmex · Order Hymenoptera · Family Formicidae</p>
-      </footer>
-
+     </footer>
     </div>
   );
 }
 
-// 3. THE DELIVERY (The Render) - This must be the very last thing in the file
-import { createRoot } from 'react-dom/client';
+// 3. THE DELIVERY (The Render) - No "import" needed here!
 const container = document.getElementById('app-root');
-const root = createRoot(container);
+const root = ReactDOM.createRoot(container); // Added ReactDOM. here
 root.render(<LeafCutterAntReport />);
