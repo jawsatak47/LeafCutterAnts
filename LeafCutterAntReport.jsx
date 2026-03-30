@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
+const { useState, useEffect } = React;
 /* ─────────────────────────────────────────────
    LEAF CUTTER ANT DEEP RESEARCH REPORT
    Self-contained React component — no external
@@ -279,7 +278,7 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
 
 /* ─────────── MAIN COMPONENT ─────────── */
 
-export default function LeafCutterAntReport() {
+ function LeafCutterAntReport() {
   /* inject Google Fonts */
   useEffect(() => {
     if (!document.querySelector("#lcant-fonts")) {
