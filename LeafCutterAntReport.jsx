@@ -62,7 +62,10 @@ function Lead({ children }) {
     </p>
   );
 }
-
+function LeafCutterAntReport() {
+  return (
+    <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
+       
 function Divider() {
   return <div style={{ height:1, background:`linear-gradient(90deg,transparent,${C.divider},transparent)`, margin:"60px 0" }} />;
 }
@@ -279,7 +282,7 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
 
 /* ─────────── MAIN COMPONENT ─────────── */
 
-
+export default function LeafCutterAntReport() {
   /* inject Google Fonts */
   useEffect(() => {
     if (!document.querySelector("#lcant-fonts")) {
@@ -632,23 +635,19 @@ const TAGS = ["Superorganism","Fungal Agriculture","Eusocial Insects","Tropical 
         </section>
 
       </main>
-
-      {/* FOOTER */}
+       {/* FOOTER */}
       <footer style={{ textAlign:"center", padding:"48px 32px", borderTop:`1px solid ${C.border}`,
                        fontFamily:MONO, fontSize:10, letterSpacing:2, color:C.textDim }}>
         <p>Deep Research Report · Leaf Cutter Ants <span style={{ color:C.greenBright }}>///</span> Compiled from peer-reviewed research including: San Diego Zoo Wildlife Alliance, PMC/NIH, Nature Communications, Frontiers in Ecology, Journal of Geophysical Research, Royal Society Open Science</p>
         <p style={{ marginTop:8, opacity:0.5 }}>Atta · Acromyrmex · Amoimyrmex · Order Hymenoptera · Family Formicidae</p>
       </footer>
 
-   </div>
+    </div>
   );
 }
 
-// THIS IS THE PART YOU ADD/FIX:
+// 3. THE DELIVERY (The Render) - This must be the very last thing in the file
 import { createRoot } from 'react-dom/client';
-
 const container = document.getElementById('app-root');
 const root = createRoot(container);
-
-// Replace 'App' with whatever your function name is at the top of this file
 root.render(<LeafCutterAntReport />);
