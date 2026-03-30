@@ -27,6 +27,24 @@ const C = {
   borderBright:"rgba(76,175,80,0.5)",
   divider:     "rgba(212,160,23,0.25)",
 };
+function Divider() {
+  return (
+    <div style={{ 
+      height: 1, 
+      background: `linear-gradient(90deg, transparent, ${C.divider}, transparent)`, 
+      margin: "60px 0" 
+    }} />
+  );
+}
+
+function FactBox({ label, children }) {
+  return (
+    <div style={{ borderLeft: `2px solid ${C.greenBright}`, paddingLeft: 20, margin: "20px 0" }}>
+      <strong style={{ color: C.greenBright, display: "block", marginBottom: 8 }}>{label}</strong>
+      <div style={{ fontFamily: SERIF, lineHeight: 1.6 }}>{children}</div>
+    </div>
+  );
+}
 
 const PLAYFAIR = "'Playfair Display', Georgia, serif";
 const SERIF    = "'Source Serif 4', Georgia, serif";
@@ -62,10 +80,6 @@ function Lead({ children }) {
     </p>
   );
 }
-function LeafCutterAntReport() {
-  return (
-    <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
-       
 function Divider() {
   return (
     <div style={{ 
@@ -75,6 +89,11 @@ function Divider() {
     }} />
   );
 }
+function LeafCutterAntReport() {
+  return (
+    <div style={{ backgroundColor: C.bg, color: C.text, minHeight: '100vh', fontFamily: SERIF }}>
+       
+
 
 function PullQuote({ quote, cite }) {
   return (
